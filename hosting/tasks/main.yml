@@ -1,2 +1,108 @@
 ---
 # tasks file for hosting
+- name: installing packages alma
+  dnf:
+    name: "{{packalma}}"
+    state: present
+  when:
+    - ansible_distribution == "{{alma}}"
+    - ansible_os_family == "{{red}}"
+- name: installing packages ubuntu
+  apt:
+    name: "{{packub}}"
+    state: present
+  when:
+    - ansible_distribution == "{{ub}}"
+    - ansible_os_family == "{{deb}}"
+
+- name: enabling and starting packages alma
+  service:
+    name: "{{packalma}}"
+    enabled: yes
+    state: started
+  when:
+    - ansible_distribution == "{{alma}}"
+    - ansible_os_family == "{{red}}"
+- name: enabling and starting packages ubuntu
+  service:
+    name: "{{packub}}"
+    enabled: yes
+    state: started
+  when:
+    - ansible_distribution == "{{ub}}"
+    - ansible_os_family == "{{deb}}"
+
+- name: copying files to "{{dest}}"
+  copy:
+    src: "{{item}}"
+    dest: "{{dest}}"
+  loop:
+    - site1.local
+    - site2.local
+  notify: restart httpd
+  when:
+    - ansible_distribution == "{{alma}}"
+    - ansible_os_family == "{{red}}"
+
+- name: copying files to "{{dest}}"
+  copy:
+    src: "{{item}}"
+    dest: "{{dest}}"
+  loop:
+    - site1.local
+    - site2.local
+  notify: restart apache2
+  when:
+    - ansible_distribution == "{{ub}}"
+    - ansible_os_family == "{{deb}}"
+
+
+- name: copying template files alma
+  template:
+    src: "{{item}}"
+    dest: "{{virtualhostalma}}/{{item}}"
+  loop:
+    - site1.local.conf.j2
+    - site2.local.conf.j2
+  when:
+    - ansible_distribution == "{{alma}}"
+    - ansible_os_family == "{{red}}"
+  notify: restart httpd
+
+- name: copying template files ubuntu
+  template:
+    src: site2.local.conf.j2
+    dest: "{{virtualhostub}}/site2.local.conf"
+  when:
+    - ansible_distribution == "{{ub}}"
+    - ansible_os_family == "{{deb}}"
+  notify: restart apache2
+
+- name: add http,https alma
+  firewalld:
+    service: "{{item}}"
+    state: enabled
+    permanent: true
+  loop:
+    - http
+    - https
+  when:
+    - ansible_distribution == "{{alma}}"
+    - ansible_os_family == "{{red}}"
+
+- name: add http,https ubuntu
+  ufw:
+    service: "{{item}}"
+    state: enabled
+    permanent: true
+  loop:
+    - http
+    - https
+  when:
+    - ansible_distribution == "{{ub}}"
+    - ansible_os_family == "{{deb}}"
+
+- name: selinux
+  selinux:
+    policy: targeted
+    state: permissive

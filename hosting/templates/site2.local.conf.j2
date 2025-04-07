@@ -1,6 +1,6 @@
 <VirtualHost *:80>
-    ServerName "{{site2}}"
-    DocumentRoot /var/www/"{{site2}}"/public_html
-    ErrorLog /var/log/httpd/site1-error.log
-    CustomLog /var/log/httpd/site1-access.log combined
+    ServerName site2.local
+    DocumentRoot /var/www/site2.local/html_public
+    ErrorLog /var/log/httpd/site2-error.log
+    CustomLog /var/log/httpd/site2-access.log combined
 </VirtualHost>

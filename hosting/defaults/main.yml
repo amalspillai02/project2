@@ -1,6 +1,10 @@
 ---
 # defaults file for hosting
-pack-alma: httpd
-pack-ub: apache2
-virtual-host-alma: /etc/httpd/conf.d/
-virttual-host-ub: /etc/apache2/sites-available/
+packalma: httpd
+packub: apache2
+virtualhostalma: /etc/httpd/conf.d/
+virttualhostub: /etc/apache2/sites-available/
+ub: Ubuntu
+deb: Debian
+alma: AlmaLinux
+red: RedHat
