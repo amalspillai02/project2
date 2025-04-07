@@ -1,0 +1,6 @@
+---
+# defaults file for hosting
+pack-alma: httpd
+pack-ub: apache2
+virtual-host-alma: /etc/httpd/conf.d/
+virttual-host-ub: /etc/apache2/sites-available/

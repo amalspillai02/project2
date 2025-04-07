@@ -1,0 +1,4 @@
+---
+# vars file for hosting
+site1: site1.local
+site2: site2.local
