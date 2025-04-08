@@ -60,10 +60,16 @@
 - name: copying template files alma
   template:
     src: "{{item}}"
-    dest: "{{virtualhostalma}}/{{item}}"
-  loop:
-    - site1.local.conf.j2
-    - site2.local.conf.j2
+    dest: "{{virtualhostalma}}/site1.local.conf"
+  when:
+    - ansible_distribution == "{{alma}}"
+    - ansible_os_family == "{{red}}"
+  notify: restart httpd
+
+- name: copying template files alma
+  template:
+    src: "{{item}}"
+    dest: "{{virtualhostalma}}/site2.local.conf"
   when:
     - ansible_distribution == "{{alma}}"
     - ansible_os_family == "{{red}}"
@@ -89,6 +95,7 @@
   when:
     - ansible_distribution == "{{alma}}"
     - ansible_os_family == "{{red}}"
+  notify: firewall
 
 - name: add http,https ubuntu
   ufw:
@@ -101,6 +108,7 @@
   when:
     - ansible_distribution == "{{ub}}"
     - ansible_os_family == "{{deb}}"
+  notify: ufw
 
 - name: selinux
   selinux:
