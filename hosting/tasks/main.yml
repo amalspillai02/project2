@@ -59,7 +59,7 @@
 
 - name: copying template files alma
   template:
-    src: "{{item}}"
+    src: site1.local.conf.j2
     dest: "{{virtualhostalma}}/site1.local.conf"
   when:
     - ansible_distribution == "{{alma}}"
@@ -68,7 +68,7 @@
 
 - name: copying template files alma
   template:
-    src: "{{item}}"
+    src: site2.local.conf.j2
     dest: "{{virtualhostalma}}/site2.local.conf"
   when:
     - ansible_distribution == "{{alma}}"
